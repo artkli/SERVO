@@ -2,12 +2,14 @@
 
 #define SERVOPIN 0
 #define LEDPIN 1
-#define POSBEG 10
-#define POSEND 170
-#define TIMEOUT1 2000
-#define TIMEOUT2 60000
-#define MINUTES 10
-#define NO 100
+#define POSBEG 1
+#define POSEND 179
+#define TIMEOUT0 1
+#define TIMEOUT1 300
+#define TIMEOUT2 10000
+#define TIMEOUT3 60000
+#define MINUTES 30
+#define NO 1000
 
 Adafruit_SoftServo myServo;
 
@@ -20,21 +22,27 @@ void setup() {
   
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, HIGH);
-  delay(5*TIMEOUT1);
+  delay(TIMEOUT2);
 }
 
 void loop() {
   for(int i = 0; i < NO; i++) {
     digitalWrite(LEDPIN, LOW);
-    myServo.write(POSBEG);
+    for(int k = POSBEG; k <= POSEND; k++) {
+      myServo.write(k);
+      delay(TIMEOUT0); 
+    }
     delay(TIMEOUT1); 
     digitalWrite(LEDPIN, HIGH);
-    myServo.write(POSEND); 
+    for(int k = POSEND; k >= POSBEG; k--) {
+      myServo.write(k);
+      delay(TIMEOUT0); 
+    }
     delay(TIMEOUT1);
   }
   digitalWrite(LEDPIN, LOW);
   for(int k = 0; k < MINUTES; k++) {
-    delay(TIMEOUT2);
+    delay(TIMEOUT3);
   }
 }
 
